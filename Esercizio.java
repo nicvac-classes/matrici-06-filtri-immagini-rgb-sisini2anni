@@ -8,49 +8,106 @@ class Esercizio {
 
     //Elimina le componenti Verde e Blu, lasciando solo il Rosso
     public static void filtroRosso( int[][] R, int[][] G, int[][] B ) {
-        // TODO: Implementare il filtro
-        // Suggerimento: azzerare i valori di G e B per ogni pixel
+       for ( int i=0; i<G.length; ++i ) {
+        for ( int j=0; j<G[0].length; ++j ) {
+            G[i][j] = 0;
+            B[i][j] = 0;
+        }
+    }
     }
     
     //Bianco e nero: R, G, B impostati alla media dei valori
     public static void filtroBW( int[][] R, int[][] G, int[][] B ) {
-        // TODO: Implementare il filtro
-        // Suggerimento: calcolare la media di R, G, B e assegnarla a tutti e tre i canali
+        for ( int i=0; i<G.length; ++i ) {
+        for ( int j=0; j<G[0].length; ++j ) {
+            int media = (R[i][j] + G[i][j] + B[i][j]) / 3;
+            R[i][j] = media;
+            G[i][j] = media;
+            B[i][j] = media;
+        }
+    }
     }
 
     //I pixel vicino al centro hanno più luminosità
     public static void filtroCentro(int[][] R, int[][] G, int[][] B) {
-        // TODO: Implementare il filtro
-        // Suggerimento: calcolare la distanza di ogni pixel dal centro
-        // e moltiplicare i valori RGB per un fattore proporzionale
+        int centroI = G.length / 2;
+    int centroJ = G[0].length / 2;
+    double distanzaMax = Math.sqrt( centroI*centroI + centroJ*centroJ);
+    for ( int i=0; i<G.length; ++i ) {
+        for ( int j=0; j<G[0].length; ++j ) {
+            double di = Math.abs(i - centroI);
+            double dj = Math.abs(j - centroJ);
+            double distanza = Math.sqrt(di*di + dj*dj);
+            
+            
+            double distanzaFattore = 1.0 - (distanza/distanzaMax);
+            R[i][j] *= distanzaFattore; 
+            G[i][j] *= distanzaFattore; 
+            B[i][j] *= distanzaFattore; 
+        }
+    }
     }
 
     //Effetto glitch (rosso e blu sfasati)
     public static void filtroGlitch(int[][] R, int[][] G, int[][] B) {
-        // TODO: Implementare il filtro
-        // Suggerimento: creare copie di R e B, poi spostare i pixel
-        // rossi in alto a sinistra e i blu in basso a destra
+        int righe = R.length;
+    int colonne = R[0].length;
+    int[][] R_orig = new int[righe][colonne];
+    int[][] B_orig = new int[righe][colonne];
+    
+    for ( int i=0; i<R.length; ++i ) {
+        for ( int j=0; j<R[0].length; ++j ) {
+            R_orig[i][j] = R[i][j];
+            B_orig[i][j] = B[i][j];
+            R[i][j] = 0;
+            B[i][j] = 0;
+        }
+    }
     }
 
     //Oscura i pixel che non sono Mare (prevalenza blu)
     public static void filtroMare(int[][] R, int[][] G, int[][] B) {
-        // TODO: Implementare il filtro
-        // Suggerimento: un pixel è "mare" se R<127, G<127, B>=127
-        // Oscurare (azzerare) i pixel che non soddisfano la condizione
+         for ( int i=0; i<G.length; ++i ) {
+        for ( int j=0; j<G[0].length; ++j ) {
+            if ( R[i][j] < 127 && G[i][j] < 127 && B[i][j] >= 127 ) {
+                ;
+            } else {
+                R[i][j] = 0; 
+                G[i][j] = 0; 
+                B[i][j] = 0; 
+            }
+        }
     }
+}
 
     //Oscura i pixel che non sono Spiaggia (prevalenza giallo)
     public static void filtroSpiaggia(int[][] R, int[][] G, int[][] B) {
-        // TODO: Implementare il filtro
-        // Suggerimento: un pixel è "spiaggia" se R>=127, G>=127, B<127
-        // Oscurare (azzerare) i pixel che non soddisfano la condizione
+        for ( int i=0; i<G.length; ++i ) {
+        for ( int j=0; j<G[0].length; ++j ) {
+            if ( R[i][j] >= 127 && G[i][j] >= 127 && B[i][j] < 127 ) {
+                ;
+            } else {
+                R[i][j] = 0; 
+                G[i][j] = 0; 
+                B[i][j] = 0; 
+            }
+        }
     }
+}
 
     //Oscura i pixel che non sono Vegetazione (prevalenza verde)
     public static void filtroVegetazione(int[][] R, int[][] G, int[][] B) {
-        // TODO: Implementare il filtro
-        // Suggerimento: un pixel è "vegetazione" se R<100, G>=100, B<100
-        // Oscurare (azzerare) i pixel che non soddisfano la condizione
+        for ( int i=0; i<G.length; ++i ) {
+        for ( int j=0; j<G[0].length; ++j ) {
+            if ( R[i][j] < 100 && G[i][j] >= 100 && B[i][j] < 100 ) {
+                ;
+            } else {
+                R[i][j] = 0; 
+                G[i][j] = 0; 
+                B[i][j] = 0; 
+            }
+        }
+    }
     }
 
     
